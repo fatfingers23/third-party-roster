@@ -16,24 +16,36 @@
 
    ![Settings](http://champs.chat/images/2020-04-20_20:38:29PM.png)
 
-    | Accepted Formats | Example |
-    | ------ | ------ |
-    | JSON | [{"rsn":"Anatamize","rank":"General"}, {"rsn":"Profiteer","rank":"Friend"}] |
+   | Accepted Formats | Example |
+   | ------ | ------ |
+   | JSON | [{"rsn":"Anatamize","rank":"General"}, {"rsn":"Profiteer","rank":"Friend"}] |
 
   - The format you choose should match your roster data. (Once again, JSON...)
+
    ![Data](http://champs.chat/images/2020-04-20_20:46:09PM.png)
 
 # Usage
 ---
   - Turn on the plugin and fill out the configuration.
+
   - Log into your RuneScape account.
+
   - If you see "Input data is malformed/corrupt", visit Setup above. Your formatting or URI is incorrect. In the following picture I accidentally put a '2' at the end of my Clan Roster URI.
-  ![Input URI is malformed/corrupt](http://champs.chat/images/2020-04-20_20:42:04PM.png)
+
+   ![Input URI is malformed/corrupt](http://champs.chat/images/2020-04-20_20:42:04PM.png)
+
   - The plugin will tell you to visit your clan setup so it can extract your clan's current ranks.
-  ![Visit 'Clan Setup'](http://champs.chat/images/2020-04-20_20:41:52PM.png)
+
+   ![Visit 'Clan Setup'](http://champs.chat/images/2020-04-20_20:41:52PM.png)
+
   - Once you visit the 'Clan Setup', you will be shown the actions you need to match your truthful clan roster URI data. That's it!
-  ![Clan Roster Actions](http://champs.chat/images/2020-04-20_20:40:49PM.png)
+
+   ![Clan Roster Actions](http://champs.chat/images/2020-04-20_20:40:49PM.png)
+
   - Once you match it up, there will be no actions left! Success!
-  ![Clan Roster Actions](http://champs.chat/images/2020-04-20_20:40:49PM.png)
- ![Success](http://champs.chat/images/2020-04-20_20:41:43PM.png)
+
+   ![Clan Roster Actions](http://champs.chat/images/2020-04-20_20:40:49PM.png)
+
+   ![Success](http://champs.chat/images/2020-04-20_20:41:43PM.png)
+
   - Profit
