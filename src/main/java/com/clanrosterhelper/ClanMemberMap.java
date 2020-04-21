@@ -22,31 +22,45 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.clanrosterpurifier;
+package com.clanrosterhelper;
 
-import net.runelite.client.config.Config;
-import net.runelite.client.config.ConfigGroup;
-import net.runelite.client.config.ConfigItem;
+/**
+ * A simple mapping of RSN -> Rank
+ */
+public class ClanMemberMap {
 
-@ConfigGroup("clanrosterpurifier")
-public interface ClanRosterPurifierConfig extends Config {
-    @ConfigItem(
-            position = 0,
-            keyName = "dataInputFormat",
-            name = "Clan Roster Format",
-            description = "The format of your clan roster file"
-    )
-    default ClanRosterDataFormat getDataInputFormat() {
-        return ClanRosterDataFormat.JSON;
+    /**
+     * The runescpae player name
+     */
+    private String rsn;
+
+    /**
+     * The runescape player's rank
+     */
+    private String rank;
+
+    /**
+     * Initialize a map from runescape player name to rank
+     *
+     * @param rsn  - the player name
+     * @param rank - the player rank
+     */
+    public ClanMemberMap(String rsn, String rank) {
+        this.rsn = rsn;
+        this.rank = rank;
     }
 
-    @ConfigItem(
-            position = 1,
-            keyName = "dataInputUrl",
-            name = "Clan Roster URI",
-            description = "The uri for your clan roster file"
-    )
-    default String getDataUrl() {
-        return "";
+    /**
+     * @return the runescape player name
+     */
+    public String getRSN() {
+        return this.rsn;
+    }
+
+    /**
+     * @return the runescape player rank
+     */
+    public String getRank() {
+        return this.rank;
     }
 }

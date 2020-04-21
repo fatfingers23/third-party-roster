@@ -22,45 +22,55 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.clanrosterpurifier;
+package com.clanrosterhelper;
+
+import com.google.gson.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * A simple mapping of RSN -> Rank
+ * The clan roster which will be used as a truthful copy. All clan setup
+ * members will be compared to this to determine how to match it.
  */
-public class ClanMemberMap {
+public class ClanRosterTruth {
 
     /**
-     * The runescpae player name
+     * The members of the clan roster
      */
-    private String rsn;
+    public final List<ClanMemberMap> MEMBERS;
 
     /**
-     * The runescape player's rank
-     */
-    private String rank;
-
-    /**
-     * Initialize a map from runescape player name to rank
+     * Initiate a clan roster that
      *
-     * @param rsn  - the player name
-     * @param rank - the player rank
+     * @param members - the members of the clan
      */
-    public ClanMemberMap(String rsn, String rank) {
-        this.rsn = rsn;
-        this.rank = rank;
+    private ClanRosterTruth(final List<ClanMemberMap> members) {
+        this.MEMBERS = members;
     }
 
     /**
-     * @return the runescape player name
+     * Parse a clan roster from JSON
+     *
+     * @param source - the json raw data
+     * @return a clan roster, if parsing is successful
+     * @throws Exception on parsing failure
      */
-    public String getRSN() {
-        return this.rsn;
-    }
+    public static ClanRosterTruth fromJSON(final String source) throws Exception {
+        Gson gson = new Gson();
 
-    /**
-     * @return the runescape player rank
-     */
-    public String getRank() {
-        return this.rank;
+        JsonParser parser = new JsonParser();
+        JsonArray document = parser.parse(source).getAsJsonArray();
+
+        List<ClanMemberMap> members = new ArrayList<>();
+        for (JsonElement member : document) {
+            JsonObject memberObject = member.getAsJsonObject();
+            String rsn = memberObject.get("rsn").getAsString();
+            String rank = memberObject.get("rank").getAsString();
+            ClanMemberMap map = new ClanMemberMap(rsn, rank);
+            members.add(map);
+        }
+
+        return new ClanRosterTruth(members);
     }
 }

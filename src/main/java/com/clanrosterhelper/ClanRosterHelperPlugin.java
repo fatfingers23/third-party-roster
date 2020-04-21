@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.clanrosterpurifier;
+package com.clanrosterhelper;
 
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
@@ -50,12 +50,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @PluginDescriptor(
-        name = "Clan Roster Purifier",
+        name = "Clan Roster Helper",
         description = "Informs the user of actions to match a truthful copy of the clan roster",
-        tags = {"clan", "roster", "purifier"}
+        tags = {"clan", "roster", "helper"}
 )
 @Slf4j
-public class ClanRosterPurifierPlugin extends Plugin {
+public class ClanRosterHelperPlugin extends Plugin {
 
     @Inject
     private Client client;
@@ -64,10 +64,10 @@ public class ClanRosterPurifierPlugin extends Plugin {
     private OverlayManager overlayManager;
 
     @Inject
-    private ClanRosterPurifierOverlay overlay;
+    private ClanRosterHelperOverlay overlay;
 
     @Inject
-    private ClanRosterPurifierConfig config;
+    private ClanRosterHelperConfig config;
 
     /**
      * Whether the config URI for the clan roster is loaded and valid
@@ -90,8 +90,8 @@ public class ClanRosterPurifierPlugin extends Plugin {
     private boolean isClanSetupWidgetAvailable = false;
 
     @Provides
-    ClanRosterPurifierConfig getConfig(ConfigManager configManager) {
-        return configManager.getConfig(ClanRosterPurifierConfig.class);
+    ClanRosterHelperConfig getConfig(ConfigManager configManager) {
+        return configManager.getConfig(ClanRosterHelperConfig.class);
     }
 
     @Override

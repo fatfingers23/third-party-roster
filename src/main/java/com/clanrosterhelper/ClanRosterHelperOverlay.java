@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.clanrosterpurifier;
+package com.clanrosterhelper;
 
 import net.runelite.api.Ignore;
 import net.runelite.client.ui.overlay.Overlay;
@@ -36,12 +36,12 @@ import javax.inject.Inject;
 import java.awt.*;
 import java.util.List;
 
-public class ClanRosterPurifierOverlay extends Overlay {
+public class ClanRosterHelperOverlay extends Overlay {
 
     /**
      * A reference to the plugin object
      */
-    private final ClanRosterPurifierPlugin plugin;
+    private final ClanRosterHelperPlugin plugin;
 
     /**
      * The UI Component
@@ -49,7 +49,7 @@ public class ClanRosterPurifierOverlay extends Overlay {
     private final PanelComponent panelComponent;
 
     @Inject
-    public ClanRosterPurifierOverlay(ClanRosterPurifierPlugin plugin) {
+    public ClanRosterHelperOverlay(ClanRosterHelperPlugin plugin) {
         super(plugin);
         setPosition(OverlayPosition.BOTTOM_LEFT);
         setLayer(OverlayLayer.ABOVE_SCENE);
