@@ -1,4 +1,4 @@
-# Clan Roster Helper Helper 
+# Clan Roster Helper
 
 ![Clan Icon](https://www.champs.chat/wp-content/uploads/2020/04/Clan_Homes_transparent.png) The clan roster helper plugin takes a truthful source of a clan extract and informs the clan owner what actions they must take to match the truthful source. The clan roster source file is a file which contains an array of objects which each have a 'rsn' value and a 'rank' value. This file acts as the truthful roster, and this plugin tells you how to match that file.
 
