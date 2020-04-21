@@ -13,12 +13,12 @@
 # Setup
 ---
   - The settings of the plugin are as follows. (Only JSON is currently supported)
-    ![Settings](http://champs.chat/images/2020-04-20_20:38:29PM.png)
-  --Clan Roster Format: The format of your data
+   ![Settings](http://champs.chat/images/2020-04-20_20:38:29PM.png)
 
     | Accepted Formats | Example |
     | ------ | ------ |
     | JSON | [{"rsn":"Anatamize","rank":"General"}, {"rsn":"Profiteer","rank":"Friend"}] |
+
   - The format you choose should match your roster data. (Once again, JSON...)
    ![Data](http://champs.chat/images/2020-04-20_20:46:09PM.png)
 
