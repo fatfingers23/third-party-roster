@@ -13,6 +13,7 @@
 # Setup
 ---
   - The settings of the plugin are as follows. (Only JSON is currently supported)
+
    ![Settings](http://champs.chat/images/2020-04-20_20:38:29PM.png)
 
     | Accepted Formats | Example |
