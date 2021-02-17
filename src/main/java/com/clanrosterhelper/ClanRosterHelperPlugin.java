@@ -1,4 +1,5 @@
 /*
+ * Copyright (c) 2021, bluelightzero
  * Copyright (c) 2020, Spencer Imbleau <spencer@imbleau.com>
  * All rights reserved.
  *
@@ -28,7 +29,9 @@ import com.google.common.base.Strings;
 import com.google.inject.Provides;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.Client;
+import net.runelite.api.MenuEntry;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.MenuEntryAdded;
 import net.runelite.api.events.WidgetLoaded;
 import net.runelite.api.widgets.Widget;
 import net.runelite.client.config.ConfigManager;
@@ -37,6 +40,7 @@ import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.client.util.ColorUtil;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -45,6 +49,7 @@ import okhttp3.Response;
 
 import javax.annotation.Nullable;
 import javax.inject.Inject;
+import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -161,6 +166,90 @@ public class ClanRosterHelperPlugin extends Plugin {
         }
     }
 
+    private String cleanColor(String input) {
+        return input.replaceAll("<[^>]*>", "");
+    }
+
+    private String replaceNonBreakingSpaces(String input) {
+        return input.replaceAll(" ", " ");
+    }
+
+    private boolean isRank(String menuRank) {
+        switch (menuRank) {
+            case "Not ranked": return true;
+            case "Recruit": return true;
+            case "Corporal": return true;
+            case "Sergeant": return true;
+            case "Lieutenant": return true;
+            case "Captain": return true;
+            case "General": return true;
+            default: return false;
+        }
+    }
+
+    @Subscribe
+    public void onMenuEntryAdded(MenuEntryAdded event)
+    {
+        MenuEntry[] menuEntries = client.getMenuEntries();
+
+        for (MenuEntry menuEntry : menuEntries) {
+            // RSNs have non-breaking spaces instead of regular ones in menus.
+            String rsnMenu = cleanColor(menuEntry.getTarget());
+            String rsn = replaceNonBreakingSpaces(rsnMenu);
+
+            String menuRank = menuEntry.getOption();
+
+            if (isRank(menuRank)) {
+
+                String expectedRank = "Not in clan";
+                String currentRank = "Not ranked";
+
+                if (clanRosterTruth != null)
+                    for (ClanMemberMap clanMemberMap : clanRosterTruth.MEMBERS) {
+                        if (rsn.equals(clanMemberMap.getRSN())) {
+                            expectedRank = clanMemberMap.getRank();
+                            break;
+                        }
+                    }
+
+                if (clanMembers != null)
+                    for (ClanMemberMap clanMemberMap : clanMembers) {
+                        if (rsn.equals(clanMemberMap.getRSN())) {
+                            currentRank = clanMemberMap.getRank();
+                            break;
+                        }
+                    }
+
+                Color highlight;
+                if (expectedRank.equals("Not in clan")) {
+                    if (menuRank.equals(currentRank)) {
+                        highlight = Color.RED;
+                    } else {
+                        highlight = Color.BLACK;
+                    }
+                } else if (expectedRank.equals(currentRank)) {
+                    if (menuRank.equals(currentRank)) {
+                        highlight = Color.GREEN;
+                    } else {
+                        highlight = Color.gray;
+                    }
+                } else {
+                    if (menuRank.equals(currentRank)) {
+                        highlight = Color.RED;
+                    } else if (menuRank.equals(expectedRank)) {
+                        highlight = Color.YELLOW;
+                    } else {
+                        highlight = Color.gray;
+                    }
+                }
+
+                menuEntry.setTarget(ColorUtil.prependColorTag(rsnMenu, highlight));
+            }
+        }
+
+        client.setMenuEntries(menuEntries);
+    }
+
     /**
      * @return the truthful copy of the clan roster
      */
@@ -236,9 +325,30 @@ public class ClanRosterHelperPlugin extends Plugin {
         if (memberValues != null) {
             int members = memberValues.length / 4;
             for (int i = 0; i < members; i++) {
-                String rank = memberValues[i * 4 + 1].getText();
                 String rsn = memberValues[i * 4 + 2].getText();
-                ClanMemberMap clanMember = new ClanMemberMap(rsn, rank);
+                String currentRank = cleanColor(memberValues[i * 4 + 1].getText());
+
+                String expectedRank = "Not in clan";
+
+                if(clanRosterTruth != null)
+                    for(ClanMemberMap clanMemberMap : clanRosterTruth.MEMBERS) {
+                        if(rsn.equals(clanMemberMap.getRSN())) {
+                            expectedRank = clanMemberMap.getRank();
+                            break;
+                        }
+                    }
+
+                Color highlight;
+                if(expectedRank.equals("Not in clan")) {
+                    highlight = Color.BLACK;
+                } else if(expectedRank.equals(currentRank)) {
+                    highlight = Color.GREEN;
+                } else {
+                    highlight = Color.RED;
+                }
+
+                memberValues[i * 4 + 1].setText(ColorUtil.prependColorTag(currentRank, highlight));
+                ClanMemberMap clanMember = new ClanMemberMap(rsn, currentRank);
                 this.clanMembers.add(clanMember);
             }
         }
