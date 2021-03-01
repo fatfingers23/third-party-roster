@@ -221,8 +221,15 @@ public class ClanRosterHelperPlugin extends Plugin {
                     }
 
                 Color highlight;
+
                 if (expectedRank.equals("Not in clan")) {
-                    if (menuRank.equals(currentRank)) {
+                    if (menuRank.equals("Not ranked")) {
+                        if (menuRank.equals(currentRank)) {
+                            highlight = Color.GREEN;
+                        } else {
+                            highlight = Color.YELLOW;
+                        }
+                    } else if (menuRank.equals(currentRank)) {
                         highlight = Color.RED;
                     } else {
                         highlight = Color.BLACK;
@@ -339,7 +346,7 @@ public class ClanRosterHelperPlugin extends Plugin {
                     }
 
                 Color highlight;
-                if(expectedRank.equals("Not in clan")) {
+                if(expectedRank.equals("Not in clan") && currentRank.equals("Not ranked")) {
                     highlight = Color.BLACK;
                 } else if(expectedRank.equals(currentRank)) {
                     highlight = Color.GREEN;

@@ -49,4 +49,14 @@ public interface ClanRosterHelperConfig extends Config {
     default String getDataUrl() {
         return "";
     }
+
+    @ConfigItem(
+            position = 2,
+            keyName = "ignoreFriendRank",
+            name = "Ignore friend rank",
+            description = "Don't show changes to friend ranks"
+    )
+    default boolean ignoreFriendRank() {
+        return false;
+    }
 }

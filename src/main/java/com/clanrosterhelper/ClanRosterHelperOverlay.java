@@ -49,6 +49,9 @@ public class ClanRosterHelperOverlay extends Overlay {
     private final PanelComponent panelComponent;
 
     @Inject
+    private ClanRosterHelperConfig config;
+
+    @Inject
     public ClanRosterHelperOverlay(ClanRosterHelperPlugin plugin) {
         super(plugin);
         setPosition(OverlayPosition.BOTTOM_LEFT);
@@ -155,7 +158,15 @@ public class ClanRosterHelperOverlay extends Overlay {
 
             //If they are not in the extract, they should be removed.
             if (match == null) {
-                drawMember("'" + clanMember.getRSN() + "':", "Remove Friend");
+                if (config.ignoreFriendRank()) {
+                    if (ranksMatch(clanMember.getRank(), "friend"))
+                        continue;
+                    if (ranksMatch(clanMember.getRank(), "not ranked"))
+                        continue;
+                    drawMember("'" + clanMember.getRSN() + "':", "Remove rank");
+                } else {
+                    drawMember("'" + clanMember.getRSN() + "':", "Remove Friend");
+                }
             }
         }
     }
