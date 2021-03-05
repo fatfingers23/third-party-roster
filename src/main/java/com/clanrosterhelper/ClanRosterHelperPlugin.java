@@ -206,7 +206,7 @@ public class ClanRosterHelperPlugin extends Plugin {
 
                 if (clanRosterTruth != null)
                     for (ClanMemberMap clanMemberMap : clanRosterTruth.MEMBERS) {
-                        if (rsn.equals(clanMemberMap.getRSN())) {
+                        if (rsn.equalsIgnoreCase(clanMemberMap.getRSN())) {
                             expectedRank = clanMemberMap.getRank();
                             break;
                         }
@@ -214,7 +214,7 @@ public class ClanRosterHelperPlugin extends Plugin {
 
                 if (clanMembers != null)
                     for (ClanMemberMap clanMemberMap : clanMembers) {
-                        if (rsn.equals(clanMemberMap.getRSN())) {
+                        if (rsn.equalsIgnoreCase(clanMemberMap.getRSN())) {
                             currentRank = clanMemberMap.getRank();
                             break;
                         }
@@ -339,7 +339,7 @@ public class ClanRosterHelperPlugin extends Plugin {
 
                 if(clanRosterTruth != null)
                     for(ClanMemberMap clanMemberMap : clanRosterTruth.MEMBERS) {
-                        if(rsn.equals(clanMemberMap.getRSN())) {
+                        if(rsn.equalsIgnoreCase(clanMemberMap.getRSN())) {
                             expectedRank = clanMemberMap.getRank();
                             break;
                         }
