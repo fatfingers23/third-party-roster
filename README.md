@@ -1,6 +1,6 @@
 # Clan Roster Helper
 
-![Clan Icon](https://www.champs.chat/wp-content/uploads/2020/04/Clan_Homes_transparent.png) The clan roster helper plugin takes a truthful source of a clan extract and informs the clan owner what actions they must take to match the truthful source. The clan roster source file is a file which contains an array of objects which each have a 'rsn' value and a 'rank' value. This file acts as the truthful roster, and this plugin tells you how to match that file.
+![Clan Icon](https://imbleau.com/runelite/third-party-roster/icon.png) This plugin takes a third party roster source as the truthful source and informs the RuneLite user how to match that in game with guidance. The guidance comes in the form of overlays telling the RuneLite user what promotions and demotions to apply to match  the given source. The third party source file should be a file which contains an array of objects which each have an 'rsn' value and a 'rank' value.
 
   - Note: Currently, the only supported format is JSON.
 
@@ -14,7 +14,7 @@
 ---
   - The settings of the plugin are as follows. (Only JSON is currently supported)
 
-   ![Settings](http://champs.chat/images/2020-04-20_20:38:29PM.png)
+   ![Settings](https://imbleau.com/runelite/third-party-roster/settings.png)
 
    | Accepted Formats | Example |
    | ------ | ------ |
@@ -22,7 +22,7 @@
 
   - The format you choose should match your roster data. (Once again, JSON...)
 
-   ![Data](http://champs.chat/images/2020-04-20_20:46:09PM.png)
+   ![Data](https://imbleau.com/runelite/third-party-roster/example_input.png)
 
 # Usage
 ---
@@ -32,20 +32,16 @@
 
   - If you see "Input data is malformed/corrupt", visit Setup above. Your formatting or URI is incorrect. In the following picture I accidentally put a '2' at the end of my Clan Roster URI.
 
-   ![Input URI is malformed/corrupt](http://champs.chat/images/2020-04-20_20:42:04PM.png)
+   ![Input URI is malformed/corrupt](https://imbleau.com/runelite/third-party-roster/input_malformed2.png)
 
   - The plugin will tell you to visit your clan setup so it can extract your clan's current ranks.
 
-   ![Visit 'Clan Setup'](http://champs.chat/images/2020-04-20_20:41:52PM.png)
+   ![Visit 'Clan Setup'](https://imbleau.com/runelite/third-party-roster/visit_setup.png)
 
   - Once you visit the 'Clan Setup', you will be shown the actions you need to match your truthful clan roster URI data. That's it!
 
-   ![Clan Roster Actions](http://champs.chat/images/2020-04-20_20:40:49PM.png)
+   ![Clan Roster Actions](https://imbleau.com/runelite/third-party-roster/actions.png)
 
   - Once you match it up, there will be no actions left! Success!
 
-   ![Clan Roster Actions](http://champs.chat/images/2020-04-20_20:40:49PM.png)
-
-   ![Success](http://champs.chat/images/2020-04-20_20:41:43PM.png)
-
-  - Profit
+   ![Success](https://imbleau.com/runelite/third-party-roster/no_actions.png)
