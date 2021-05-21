@@ -1,7 +1,5 @@
 [![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/rank/author/Spencer_Imbleau)](https://runelite.net/plugin-hub) [![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/rank/plugin/clan-roster-helper-plugin)](https://runelite.net/plugin-hub) [![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/clan-roster-helper-plugin)](https://runelite.net/plugin-hub) 
 
-https://github.com/simbleau/clan-roster-purifier
-
 # State
 
 ⚠️ **[DEPRECATED] Not stable or supported since the [clan update](https://secure.runescape.com/m=news/clans-soft-launch?oldschool=1).**
