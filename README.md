@@ -1,3 +1,13 @@
+[![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/rank/author/Spencer%20Imbleau)](https://runelite.net/plugin-hub) [![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/rank/plugin/clan-roster-helper-plugin)](https://runelite.net/plugin-hub) [![](https://img.shields.io/endpoint?url=https://i.pluginhub.info/shields/installs/plugin/clan-roster-helper-plugin)](https://runelite.net/plugin-hub) 
+
+https://github.com/simbleau/clan-roster-purifier
+
+# State
+
+⚠️ **[DEPRECATED] Not stable or supported since the [clan update](https://secure.runescape.com/m=news/clans-soft-launch?oldschool=1).**
+
+  - This plugin is not actively maintained and probably will cause issues with your client! This is directly related to Jagex's decision to change the UI and clan system entirely. Unless someone rescues this repo and updates it, it will depend on when I get around to it.
+
 # Clan Roster Helper
 
 ![Clan Icon](https://imbleau.com/runelite/third-party-roster/icon.png) This plugin takes a third party roster source as the truthful source and informs the RuneLite user how to match that in game with guidance. The guidance comes in the form of overlays telling the RuneLite user what promotions and demotions to apply to match  the given source. The third party source file should be a file which contains an array of objects which each have an 'rsn' value and a 'rank' value.
