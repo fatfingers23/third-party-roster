@@ -54,6 +54,7 @@ import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @PluginDescriptor(
         name = "Clan Roster Helper",
@@ -171,11 +172,6 @@ public class ClanRosterHelperPlugin extends Plugin {
                 scrapeMembers();
             }
             overlay.update();
-        }
-
-        if(widget.getGroupId() == 707){
-            this.isClanSetupWidgetAvailable = true;
-            this.setClanInfo();
         }
     }
 
@@ -367,19 +363,37 @@ public class ClanRosterHelperPlugin extends Plugin {
         }
         this.clanMembers.clear();
 
-        //Scrape all clan members
+        //Checks to set up scraping
         Widget clanMemberNamesWidget = this.client.getWidget(693,10);
         Widget rankWidget = this.client.getWidget(693, 11);
         Widget joinedWidget = this.client.getWidget(693, 13);
+
+        Widget[] leftColumnName = Objects.requireNonNull(this.client.getWidget(693, 7)).getChildren();
+        if (leftColumnName != null) {
+            if(!leftColumnName[4].getText().equals("Rank")){
+                return;
+            }
+        }
+
+        Widget[] rightColumnName = Objects.requireNonNull(this.client.getWidget(693, 8)).getChildren();
+        if (rightColumnName != null) {
+            if (!rightColumnName[4].getText().equals("Joined")) {
+                return;
+            }
+
+        }
+
         if(clanMemberNamesWidget == null || rankWidget == null || joinedWidget == null){
             return;
         }
         Widget[] clanMemberNamesWidgetValues = clanMemberNamesWidget.getChildren();
         Widget[] rankWidgetValues = rankWidget.getChildren();
         Widget[] joinedWidgetValues = joinedWidget.getChildren();
+
         if(clanMemberNamesWidgetValues == null || rankWidgetValues == null || joinedWidgetValues == null){
             return;
         }
+        //Scrape all clan members
 
         int lastSuccessfulRsnIndex = 0;
         int otherColumnsPositions = 0;
