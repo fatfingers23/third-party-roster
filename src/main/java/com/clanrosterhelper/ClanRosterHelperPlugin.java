@@ -23,7 +23,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.clanrosterhelper;
+package net.runelite.client.plugins.clanrosterhelper;
 
 import com.google.common.base.Strings;
 import com.google.inject.Provides;
@@ -41,6 +41,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.client.util.ColorUtil;
+import net.runelite.client.util.Text;
 import net.runelite.http.api.RuneLiteAPI;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -94,6 +95,16 @@ public class ClanRosterHelperPlugin extends Plugin {
      */
     private boolean isClanSetupWidgetAvailable = false;
 
+    /**
+     * The number of runescape players in a clan
+     */
+    private int clanMemberCount;
+
+    /**
+     * Name of the runescape clan
+     */
+    private String clanName;
+
     @Provides
     ClanRosterHelperConfig getConfig(ConfigManager configManager) {
         return configManager.getConfig(ClanRosterHelperConfig.class);
@@ -137,6 +148,9 @@ public class ClanRosterHelperPlugin extends Plugin {
                 try {
                     final String source = response.body().string();
                     digestClanRoster(source);
+                    if(response.isSuccessful()){
+                        isClanRosterCorrupt = false;
+                    }
                     overlay.update();
                 } finally {
                     response.close();
@@ -147,22 +161,29 @@ public class ClanRosterHelperPlugin extends Plugin {
 
     @Subscribe
     public void onWidgetLoaded(WidgetLoaded widget) {
-        if (widget.getGroupId() == 94) {
-            this.isClanSetupWidgetAvailable = true;
-        }
-    }
 
-    @Subscribe
-    public void onGameTick(GameTick gameTick) {
-        //Update the overlay if the clan setup widget is visible on screen
-        if (this.isClanSetupWidgetAvailable) {
-            if (this.client.getWidget(94, 28) == null) {
+        //693 is the member list group inside of clan settings
+        if(widget.getGroupId() == 693){
+            if (this.client.getWidget(693, 9) == null) {
                 this.clanMembers = null;
                 this.isClanSetupWidgetAvailable = false;
             } else {
                 scrapeMembers();
             }
             overlay.update();
+        }
+
+        if(widget.getGroupId() == 707){
+            this.isClanSetupWidgetAvailable = true;
+            this.setClanInfo();
+        }
+    }
+
+    @Subscribe
+    public void onGameTick(GameTick gameTick) {
+        //Update the overlay if the clan setup widget is visible on screen
+        if(this.client.getWidget(707, 0) != null){
+            this.setClanInfo();
         }
     }
 
@@ -316,6 +337,26 @@ public class ClanRosterHelperPlugin extends Plugin {
         return isClanRosterCorrupt;
     }
 
+    public void setClanInfo(){
+        //Gets and sets clan count
+        Widget memberCounterWidget = this.client.getWidget(701, 3);
+        if (memberCounterWidget != null) {
+            if(memberCounterWidget.getText() != null){
+                String clanSizeText = Text.removeTags(memberCounterWidget.getText());
+                if(clanSizeText.contains("Size:")){
+                    this.clanMemberCount = Integer.parseInt(clanSizeText.replace("Size: ", ""));
+                }
+
+
+            }
+        }
+        //Gets and sets clan name
+        Widget clanNameWidget = this.client.getWidget(701,1);
+            if (clanNameWidget != null) {
+                this.clanName = Text.removeTags(clanNameWidget.getText());
+            }
+    }
+
     /**
      * Subroutine - Update our memory of clan members and their ranks for
      * clan setup
@@ -327,37 +368,69 @@ public class ClanRosterHelperPlugin extends Plugin {
         this.clanMembers.clear();
 
         //Scrape all clan members
-        Widget memberContainer = this.client.getWidget(94, 28);
-        Widget[] memberValues = memberContainer.getChildren();
-        if (memberValues != null) {
-            int members = memberValues.length / 4;
-            for (int i = 0; i < members; i++) {
-                String rsn = memberValues[i * 4 + 2].getText();
-                String currentRank = cleanColor(memberValues[i * 4 + 1].getText());
+        Widget clanMemberNamesWidget = this.client.getWidget(693,10);
+        Widget rankWidget = this.client.getWidget(693, 11);
+        Widget joinedWidget = this.client.getWidget(693, 13);
+        if(clanMemberNamesWidget == null || rankWidget == null || joinedWidget == null){
+            return;
+        }
+        Widget[] clanMemberNamesWidgetValues = clanMemberNamesWidget.getChildren();
+        Widget[] rankWidgetValues = rankWidget.getChildren();
+        Widget[] joinedWidgetValues = joinedWidget.getChildren();
+        if(clanMemberNamesWidgetValues == null || rankWidgetValues == null || joinedWidgetValues == null){
+            return;
+        }
 
-                String expectedRank = "Not in clan";
-
-                if(clanRosterTruth != null)
-                    for(ClanMemberMap clanMemberMap : clanRosterTruth.MEMBERS) {
-                        if(rsn.equalsIgnoreCase(clanMemberMap.getRSN())) {
-                            expectedRank = clanMemberMap.getRank();
-                            break;
-                        }
-                    }
-
-                Color highlight;
-                if(expectedRank.equals("Not in clan") && currentRank.equals("Not ranked")) {
-                    highlight = Color.BLACK;
-                } else if(expectedRank.equals(currentRank)) {
-                    highlight = Color.GREEN;
-                } else {
-                    highlight = Color.RED;
-                }
-
-                memberValues[i * 4 + 1].setText(ColorUtil.prependColorTag(currentRank, highlight));
-                ClanMemberMap clanMember = new ClanMemberMap(rsn, currentRank);
+        int lastSuccessfulRsnIndex = 0;
+        int otherColumnsPositions = 0;
+        for(int i = 0; i < clanMemberNamesWidgetValues.length; i++){
+            int valueOfRsnToGet;
+            if(i == 0) {
+               valueOfRsnToGet = 1;
+            }else {
+                valueOfRsnToGet = lastSuccessfulRsnIndex + 3;
+            }
+            boolean inBounds = (valueOfRsnToGet >= 0) && (valueOfRsnToGet < clanMemberNamesWidgetValues.length);
+            if(inBounds){
+                int otherColumnsIndex = otherColumnsPositions + this.clanMemberCount;
+                String rsn = Text.removeTags(clanMemberNamesWidgetValues[valueOfRsnToGet].getText());
+                String rank = Text.removeTags(rankWidgetValues[otherColumnsIndex].getText());
+                String joinedDate = Text.removeTags(joinedWidgetValues[otherColumnsIndex].getText());
+                ClanMemberMap clanMember = new ClanMemberMap(rsn, rank, joinedDate);
                 this.clanMembers.add(clanMember);
+                lastSuccessfulRsnIndex = valueOfRsnToGet;
+                otherColumnsPositions++;
             }
         }
+
+
+//            for (int i = 0; i < membersLength; i++) {
+//                String rsn = memberValues[i * 4 + 2].getText();
+//                String currentRank = cleanColor(memberValues[i * 4 + 1].getText());
+//
+//                String expectedRank = "Not in clan";
+//
+//                if(clanRosterTruth != null)
+//                    for(ClanMemberMap clanMemberMap : clanRosterTruth.MEMBERS) {
+//                        if(rsn.equalsIgnoreCase(clanMemberMap.getRSN())) {
+//                            expectedRank = clanMemberMap.getRank();
+//                            break;
+//                        }
+//                    }
+//
+//                Color highlight;
+//                if(expectedRank.equals("Not in clan") && currentRank.equals("Not ranked")) {
+//                    highlight = Color.BLACK;
+//                } else if(expectedRank.equals(currentRank)) {
+//                    highlight = Color.GREEN;
+//                } else {
+//                    highlight = Color.RED;
+//                }
+//
+//                memberValues[i * 4 + 1].setText(ColorUtil.prependColorTag(currentRank, highlight));
+//                ClanMemberMap clanMember = new ClanMemberMap(rsn, currentRank);
+//                this.clanMembers.add(clanMember);
+//            }
+        }
     }
-}
+

@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.clanrosterhelper;
+package net.runelite.client.plugins.clanrosterhelper;
 
 /**
  * A simple mapping of RSN -> Rank
@@ -30,7 +30,7 @@ package com.clanrosterhelper;
 public class ClanMemberMap {
 
     /**
-     * The runescpae player name
+     * The runescpae player's name
      */
     private String rsn;
 
@@ -40,27 +40,39 @@ public class ClanMemberMap {
     private String rank;
 
     /**
+     *  Date the runscape player's joined the clan
+     */
+    private String joinedDate;
+
+    /**
      * Initialize a map from runescape player name to rank
      *
      * @param rsn  - the player name
      * @param rank - the player rank
+     * @param joinedDate - date player joined the clan
      */
-    public ClanMemberMap(String rsn, String rank) {
+    public ClanMemberMap(String rsn, String rank, String joinedDate) {
         this.rsn = rsn;
         this.rank = rank;
+        this.joinedDate = joinedDate;
     }
 
     /**
-     * @return the runescape player name
+     * @return the runescape player's name
      */
     public String getRSN() {
         return this.rsn;
     }
 
     /**
-     * @return the runescape player rank
+     * @return the runescape player's rank
      */
     public String getRank() {
         return this.rank;
     }
+
+    /**
+     * @return the runescape player's joined date
+     */
+    public String getJoinedDate() { return  this.joinedDate;}
 }

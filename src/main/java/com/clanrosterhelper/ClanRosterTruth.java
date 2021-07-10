@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.clanrosterhelper;
+package net.runelite.client.plugins.clanrosterhelper;
 
 import com.google.gson.*;
 
@@ -67,7 +67,8 @@ public class ClanRosterTruth {
             JsonObject memberObject = member.getAsJsonObject();
             String rsn = memberObject.get("rsn").getAsString();
             String rank = memberObject.get("rank").getAsString();
-            ClanMemberMap map = new ClanMemberMap(rsn, rank);
+            String joinedDate = memberObject.get("joinedDate").getAsString();
+            ClanMemberMap map = new ClanMemberMap(rsn, rank, joinedDate);
             members.add(map);
         }
 

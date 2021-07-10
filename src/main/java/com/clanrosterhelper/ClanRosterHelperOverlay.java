@@ -22,7 +22,7 @@
  * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
  * SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
-package com.clanrosterhelper;
+package net.runelite.client.plugins.clanrosterhelper;
 
 import net.runelite.api.Ignore;
 import net.runelite.client.ui.overlay.Overlay;
@@ -81,7 +81,7 @@ public class ClanRosterHelperOverlay extends Overlay {
             panelComponent.getChildren().add(TitleComponent.builder().text("Input URI is malformed/corrupt").build());
             return;
         } else if (plugin.getClanMembers() == null) {
-            panelComponent.getChildren().add(TitleComponent.builder().text("Visit 'Clan Setup'").build());
+            panelComponent.getChildren().add(TitleComponent.builder().text("Visit 'Members' under 'Clan Settings'").build());
             return;
         }
 
